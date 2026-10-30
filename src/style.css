@@ -1,0 +1,632 @@
+/* ==========================================================================
+   PUMBLE CONTRA - Retro Arcade Run and Gun Stylesheet
+   Preparado para SPA móvil y Capacitor (iOS / Android)
+   ========================================================================== */
+
+:root {
+  --color-bg: #070913;
+  --color-canvas-bg: #000000;
+  --color-primary: #ff0055;
+  --color-secondary: #00f0ff;
+  --color-accent: #ffe600;
+  --color-surface: rgba(18, 22, 38, 0.85);
+  --color-surface-border: rgba(255, 255, 255, 0.15);
+  --color-text: #ffffff;
+  --color-text-dim: #a0aec0;
+  --font-retro: 'Courier New', Courier, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+/* Contenedor principal de la aplicación */
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle at center, #141c2e 0%, #060911 100%);
+}
+
+/* Área de visualización del Arcade */
+.game-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 960px;
+  max-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.25), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  background-color: var(--color-canvas-bg);
+}
+
+/* Lienzo HTML5 */
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ==========================================================================
+   MENÚ PRINCIPAL Y PANTALLAS DE INTERFAZ
+   ========================================================================== */
+
+.menu-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 9, 19, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 50;
+  padding: 20px;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+
+.menu-overlay.hidden {
+  display: none;
+}
+
+.game-title-container {
+  margin-bottom: 24px;
+}
+
+.title-badge {
+  display: inline-block;
+  background: #ff0055;
+  color: #fff;
+  font-family: var(--font-retro);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.game-title {
+  font-family: var(--font-retro);
+  font-size: clamp(32px, 8vw, 54px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  background: linear-gradient(180deg, #fff000 0%, #ff0055 70%, #990022 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 10px rgba(255, 0, 85, 0.6));
+}
+
+.game-tagline {
+  color: var(--color-secondary);
+  font-family: var(--font-retro);
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+}
+
+.menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.arcade-btn {
+  font-family: var(--font-retro);
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #ff0055 0%, #b3003b 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-continue {
+  background: linear-gradient(180deg, #00f0ff 0%, #0088cc 100%);
+  color: #070913;
+  font-weight: 900;
+  box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  animation: pulseContinue 1.5s infinite alternate;
+}
+
+@keyframes pulseContinue {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.2); }
+}
+
+.max-level-badge {
+  display: inline-block;
+  background: rgba(0, 240, 255, 0.15);
+  border: 1px solid #00f0ff;
+  color: #00f0ff;
+  font-family: var(--font-retro);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-top: 6px;
+  margin-bottom: 2px;
+}
+
+.btn-primary:active,
+.btn-continue:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 8px rgba(255, 0, 85, 0.5);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.keyboard-hints {
+  margin-top: 20px;
+  font-size: 11px;
+  color: var(--color-text-dim);
+  font-family: var(--font-retro);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   CONTROLES VIRTUALES TÁCTILES (SPA Mobile / Capacitor)
+   ========================================================================== */
+
+#virtual-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px 24px;
+  z-index: 40;
+}
+
+.virtual-dpad-container,
+.virtual-actions-container {
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ==========================================================================
+   JOYSTICK VIRTUAL TÁCTIL EN PANTALLA (8 DIRECCIONES)
+   ========================================================================== */
+
+.virtual-joystick-zone {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.joystick-base {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 20, 36, 0.8) 0%, rgba(6, 9, 18, 0.95) 100%);
+  border: 2px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 0, 0, 0.8);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Guías de las 8 direcciones arcade */
+.joystick-guide {
+  position: absolute;
+  background: rgba(0, 240, 255, 0.2);
+  pointer-events: none;
+}
+
+.joystick-guide.vertical {
+  width: 2px;
+  height: 85%;
+}
+
+.joystick-guide.horizontal {
+  height: 2px;
+  width: 85%;
+}
+
+.joystick-guide.diagonal-1 {
+  width: 2px;
+  height: 80%;
+  transform: rotate(45deg);
+  background: rgba(0, 240, 255, 0.12);
+}
+
+.joystick-guide.diagonal-2 {
+  width: 2px;
+  height: 80%;
+  transform: rotate(-45deg);
+  background: rgba(0, 240, 255, 0.12);
+}
+
+/* Palanca central táctil (Thumbstick) */
+.joystick-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #00f0ff, #005588);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), 0 0 12px rgba(0, 240, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.thumb-core {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  opacity: 0.45;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.virtual-joystick-zone.active .joystick-base {
+  border-color: #00f0ff;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+}
+
+/* BOTONES DE ACCIÓN (DISPARO & SALTO) */
+.action-buttons-wrapper {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.action-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-retro);
+  cursor: pointer;
+  border: 2px solid;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+  transition: transform 0.08s, filter 0.08s;
+}
+
+.action-btn:active, .action-btn.active {
+  transform: scale(0.92);
+  filter: brightness(1.3);
+}
+
+.btn-jump {
+  background: radial-gradient(circle at 35% 35%, #22bbff, #0066cc);
+  border-color: #66d9ff;
+  color: #ffffff;
+}
+
+.btn-fire {
+  background: radial-gradient(circle at 35% 35%, #ff2255, #cc0033);
+  border-color: #ff88a3;
+  color: #ffffff;
+}
+
+.btn-label {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.btn-subtext {
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* BOTÓN RÁPIDO DE PAUSA EN ESQUINA SUPERIOR DERECHA */
+.btn-top-hud {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(18, 22, 38, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 45;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   MODALES (High Scores, Settings, Game Over)
+   ========================================================================== */
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(4, 6, 14, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.15);
+}
+
+.modal-title {
+  font-family: var(--font-retro);
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.neon-orange { color: #ff9900; text-shadow: 0 0 10px rgba(255, 153, 0, 0.6); }
+.neon-cyan { color: #00f0ff; text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
+.neon-red { color: #ff2255; text-shadow: 0 0 10px rgba(255, 34, 85, 0.6); }
+.neon-yellow { color: #ffe600; text-shadow: 0 0 10px rgba(255, 230, 0, 0.6); }
+
+.modal-subtitle {
+  font-family: var(--font-retro);
+  font-size: 11px;
+  color: var(--color-text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+
+/* Tabla de High Scores */
+.high-scores-list {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  padding: 10px;
+  font-family: var(--font-retro);
+  font-size: 13px;
+  margin-bottom: 20px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.score-header-row,
+.score-row {
+  display: grid;
+  grid-template-columns: 26px 1fr 68px 74px 34px;
+  padding: 6px 8px;
+  align-items: center;
+  text-align: left;
+}
+
+.score-level {
+  color: var(--color-secondary);
+  font-size: 11px;
+}
+
+.score-header-row {
+  font-weight: bold;
+  color: var(--color-text-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 4px;
+}
+
+.score-row.gold { color: #ffd700; font-weight: bold; }
+.score-row.silver { color: #c0c0c0; }
+.score-row.bronze { color: #cd7f32; }
+
+.victory-sub {
+  color: #ffd700;
+  font-size: 12px;
+  font-family: var(--font-retro);
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.modal-actions.column {
+  flex-direction: column;
+}
+
+/* Ajustes */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+
+.setting-item input[type="range"] {
+  width: 120px;
+}
+
+/* Game Over */
+.gameover-sub {
+  color: #ff99aa;
+  font-size: 12px;
+  font-family: var(--font-retro);
+  margin-bottom: 16px;
+}
+
+.stat-box {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 11px;
+  color: var(--color-text-dim);
+  margin-bottom: 4px;
+  font-family: var(--font-retro);
+}
+
+.stat-val {
+  font-family: var(--font-retro);
+  font-size: 26px;
+  font-weight: 900;
+  color: #00f0ff;
+}
+
+.new-highscore-badge {
+  color: #ffd700;
+  font-weight: bold;
+  font-family: var(--font-retro);
+  font-size: 13px;
+  margin-bottom: 10px;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); filter: brightness(1); }
+  to { transform: scale(1.05); filter: brightness(1.3); }
+}
+
+.player-name-input-group {
+  margin-bottom: 16px;
+}
+
+.player-name-input-group label {
+  display: block;
+  font-size: 11px;
+  font-family: var(--font-retro);
+  margin-bottom: 6px;
+  color: var(--color-accent);
+}
+
+.player-name-input-group input {
+  background: #000;
+  border: 2px solid var(--color-accent);
+  color: #fff;
+  font-family: var(--font-retro);
+  font-size: 20px;
+  font-weight: 900;
+  text-align: center;
+  width: 100px;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   ADAPTACIÓN RESPONSIVA (Mobile Portrait vs Landscape)
+   ========================================================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+  #app {
+    justify-content: flex-start;
+    padding-top: 10px;
+  }
+
+  .game-viewport {
+    height: 48vh;
+    border-radius: 0;
+  }
+
+  #virtual-controls {
+    position: relative;
+    height: 50vh;
+    padding: 10px 16px 20px 16px;
+    align-items: center;
+  }
+}

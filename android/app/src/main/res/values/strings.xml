@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pumble Contra</string>
+    <string name="title_activity_main">Pumble Contra</string>
+    <string name="package_name">com.tujuego.pumblecontra</string>
+    <string name="custom_url_scheme">com.tujuego.pumblecontra</string>
+</resources>

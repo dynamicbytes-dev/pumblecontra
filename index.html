@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#070913" />
+    <title>PUMBLE CONTRA: ALIEN SLAPSTICK 2D</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- ÁREA DE JUEGO (CANVAS CON ASPECT RATIO RETRO) -->
+      <main class="game-viewport">
+        <canvas id="game-canvas" width="480" height="270"></canvas>
+
+        <!-- BOTÓN RÁPIDO DE PAUSA EN ESQUINA SUPERIOR DERECHA -->
+        <button id="btn-quick-pause" class="btn-top-hud" aria-label="Pausa">⏸️</button>
+
+        <!-- MENÚ PRINCIPAL -->
+        <div id="main-menu" class="menu-overlay">
+          <div class="game-title-container">
+            <span class="title-badge">★ PARODIA ARCADE 2D ★</span>
+            <h1 class="game-title">PUMBLE<br />CONTRA</h1>
+            <div id="menu-max-level" class="max-level-badge">NIVEL MÁXIMO: STAGE 1 / 20</div>
+          </div>
+
+          <nav class="menu-actions">
+            <button id="btn-continue-game" class="arcade-btn btn-continue hidden">
+              ⏩ CONTINUAR PARTIDA
+            </button>
+            <button id="btn-start-game" class="arcade-btn btn-primary">
+              ▶ NUEVA PARTIDA (STAGE 1)
+            </button>
+            <button id="btn-high-scores" class="arcade-btn btn-secondary">
+              🏆 SALÓN DE LA FAMA
+            </button>
+            <button id="btn-settings" class="arcade-btn btn-secondary">
+              ⚙️ AJUSTES & AUDIO
+            </button>
+          </nav>
+
+          <footer class="keyboard-hints">
+            ⌨️ TECLADO: <strong>WASD / FLECHAS</strong> para mover y apuntar<br />
+            <strong>Z / J / ESPACIO</strong> disparar | <strong>X / K</strong> saltar | <strong>P / ESC</strong> pausa
+          </footer>
+        </div>
+      </main>
+
+      <!-- CAPA DE CONTROLES VIRTUALES TÁCTILES (MULTITOUCH) -->
+      <div id="virtual-controls"></div>
+    </div>
+
+    <!-- MODAL DE OVERLAY PARA ALERTAS Y SUBMENÚS -->
+    <div id="game-modal-overlay" class="modal-overlay hidden"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
